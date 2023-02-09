@@ -1,11 +1,8 @@
 <?php
-require('config.php');
 
+require('head_section.php');
 
-
-// if (isset($_POST["reset-password-submit"])) {
-const y = 1;
-if (y == 1) {
+if (isset($_POST["reset-password-submit"])) {
 
 
     $selector = $_POST["selector"];
@@ -15,17 +12,18 @@ if (y == 1) {
 
 
     if (empty($passwordReset) || empty($passwordRepeat)) {
-        //might have to go to sign up pagae
-        header("Location: login.php?newpwd=empty");
+
+        header("Location: ../login.php?newpwd=empty");
         exit();
     } else if ($passwordReset != $passwordRepeat) {
-        header("Location: login.php?newpwd=pwdDoNotMatch");
+        header("Location: ../login.php?newpwd=pwdDoNotMatch");
         exit();
     }
 
     $currentDate = date("U");
 
-
+    // require('..RME/config.php');
+    require('../config.php');
 
     $sql = "SELECT * FROM pwdReset WHERE pwdResetSelector = ? AND pwdResetExpires >= ?";
     $stmt = mysqli_stmt_init($conn);
@@ -83,7 +81,7 @@ if (y == 1) {
                             } else {
                                 mysqli_stmt_bind_param($stmt, "s", $tokenEmail);
                                 mysqli_stmt_execute($stmt);
-                                header("Location: login.php?newpwd=passwordupdated");
+                                header("Location: ../login.php?newpwd=passwordupdated");
                             }
                         }
                     }
@@ -92,5 +90,5 @@ if (y == 1) {
         }
     }
 } else {
-    header("Location: index.php?newpwd=failed");
+    header("Location: ../index.php?newpwd=failed");
 }

@@ -1,17 +1,12 @@
 <?php
-require('config.php');
-require "vendor/autoload.php";
+
+require "../vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
 
-// if (isset($_POST["reset-request-submit"])) {
-
-const x = 1;
-
-if (x == 1) {
-
+if (isset($_POST["reset-request-submit"])) {
 
     $selector = bin2hex(random_bytes(8));
     $token = random_bytes(32);
@@ -21,7 +16,8 @@ if (x == 1) {
     $expires = date("U") + 1800;
 
 
-
+    require('../config.php');
+    // require('head_section.php');
 
     $userEmail = $_POST["email"];
 
@@ -77,14 +73,14 @@ if (x == 1) {
     $mail->addAddress($userEmail);
 
     $subject = "Reset Your Password from The Manager Life";
-    $message = "<p>We have recieved a password reset request.  The link to reset your password is below.  If you did NOT make this request, you can ignore this email.</p>";
+    $message = "<p>We have recieved a password reest request.  The link to reset your password is below.  If you did NOT make this request, you can ignore this email.</p>";
 
     $message .= "<p>Here is your password reset Link: <br>";
     $message .= '<a href = "' . $url . '">' . $url . '</a></p>';
 
-    // $message .= "From: TML <mr.mikesorrentino@gmail.com>\r\n";
-    // $message .= "Reply-To: mr.mikesorrentino@gmail.com\r\n";
-    // $message .= "Content-type: text/html\r\n";
+    $message .= "From: TML <mr.mikesorrentino@gmail.com>\r\n";
+    $message .= "Reply-To: mr.mikesorrentino@gmail.com\r\n";
+    $message .= "Content-type: text/html\r\n";
 
     $mail->Subject = $subject;
     $mail->Body = $message;
@@ -92,7 +88,7 @@ if (x == 1) {
 
     $mail->Send();
 
-    header("Location: resetPassword.php?reset=success");
+    header("Location: ../resetPassword.php?reset=success");
 } else {
-    header("Location: index.php");
+    header("Location: ../index.php");
 };
